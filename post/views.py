@@ -1,5 +1,9 @@
+from django.http import Http404
 from django.shortcuts import render
 from .forms import *
+
+def home_view(request):
+    return render(request, 'index.html')
 
 
 def create_link(request):
@@ -13,11 +17,11 @@ def create_link(request):
             form.save()
 
 
-    contex =[
+    contex = {
         'form': form,
-    ]
+    }
 
-    return render(request, 'linkadd.html', contex)
+    return render(request, 'index.html', contex)
 
 
 # Create your views here.
