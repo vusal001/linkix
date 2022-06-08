@@ -24,7 +24,8 @@ from post.views import home_view
 urlpatterns = [
     path('', home_view, name='home'),
     path('admin/', admin.site.urls),
-    path(r'account/', include('account.urls')),
+    path('account/', include('account.urls')),
+    path('', include('post.urls')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

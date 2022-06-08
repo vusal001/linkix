@@ -6,7 +6,7 @@ class LinkForm(forms.ModelForm):
 
     class Meta:
         model = Link
-        fields = ('name', 'link')
+        fields = ('name', 'link', 'linktype')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

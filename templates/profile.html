@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title></title>
+    </head>
+
+    <body>
+
+        {{ user.username }}
+
+        {% for link in links %}
+
+        
+        <div style="padding: 10px; border:  1px black solid;">
+            <h1>{{ link.name }}</h1>
+            <a href="{{ link.link }}">{{ link.link }}</a>
+
+        </div>
+          
+
+
+
+        {% endfor %}
+    </body>
+
+</html>

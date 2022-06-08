@@ -7,8 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.db.models import  F
 from .forms import *
-
-
+from post.models import Link
+from .models import UserData
 
 def Login(request):
 
@@ -22,6 +22,7 @@ def Login(request):
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['parol'])
             if user:
                 login(request, user)
+                return HttpResponseRedirect(reverse('home'))
             else:
                 messages.error(request, 'Daxil etdiyiniz şifrə və ya telefon nömrəsi yanlışdır. Zəhmət olmasa bir daha sınayın.')
 
@@ -34,7 +35,8 @@ def Login(request):
 
     return render(request, 'login.html', contex)
 
-
+import random
+import string
 def Register(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('home'))
@@ -45,8 +47,20 @@ def Register(request):
             user = form.save(commit=False)
             password = form.cleaned_data.get('password1')
             user.set_password(password)
+
             
+            while True:
+                letters = string.ascii_letters + string.digits
+                newslug = ''.join(random.choice(letters) for i in range(7))
+                userlist = User.objects.all().values_list('last_name', flat=True)
+                if newslug not in userlist:
+                    user.last_name = newslug    
+                    break
+
+
+
             user.save()
+            UserData.objects.create(user=user, clicklink=0, coins=0)
             new_user = authenticate(username=user.username, password=password)
 
             login(request, new_user)
@@ -61,6 +75,21 @@ def Register(request):
     }
 
     return render(request, 'register.html', contex)
+
+
+def Profile(request, username):
+    user = User.objects.get(username=username)
+
+    user_links = Link.objects.filter(user=user)
+
+
+
+    contex = {
+        'user': user,
+        'links': user_links,
+    }
+
+    return render(request, 'profile.html', contex)
 
 
 # Create your views here.
