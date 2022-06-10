@@ -12,6 +12,22 @@ def home_view(request):
     return render(request, 'index.html')
 
 
+import requests
+import json
+
+
+def get(ip):
+    endpoint = f'https://ipinfo.io/{ip}/json'
+    response = requests.get(endpoint, verify = True)
+
+    if response.status_code != 200:
+        return 'Status:', response.status_code, 'Problem with the request. Exiting.'
+        exit()
+
+    data = response.json()
+
+    return data['country']
+
 def ads_view(request, slug):
     linkuser = Link.objects.get(slug=slug).user
 
@@ -23,13 +39,19 @@ def ads_view(request, slug):
     if x_forwarded_for:
         userip = x_forwarded_for.split(',')[0]
     else:
-        userip = request.META.get('REMOTE_ADDR')
+        userip = '5.197.211.8' # request.META.get('REMOTE_ADDR')
 
     useripstr = str(userip)
+
+
 
     iplist= LinkIpList.objects.filter(link__slug=slug)
     
     iplistaddr = list()
+
+    my_country = get(useripstr)
+
+    
 
     for i in iplist:
         iplistaddr.append(i.ipaddr)
@@ -39,13 +61,13 @@ def ads_view(request, slug):
 
     linkclick = UserData.objects.get(user=linkownuser).clicklink
 
-    if useripstr not in iplistaddr:
+    if useripstr not in iplistaddr and my_country == 'AZ':
         form = LinkIpList.objects.create(link=linkuserid, ipaddr=useripstr)
-        linkclickupt = UserData.objects.filter(user=linkownuser).update(coins=F('coins') + 1)
+        linkcoinsupt = UserData.objects.filter(user=linkownuser).update(coins=F('coins') + 1)
     
 
     contex = {
-        
+        'link' : linkuserid,
     }
 
 

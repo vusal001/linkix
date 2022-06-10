@@ -50,8 +50,8 @@ def Register(request):
 
             
             while True:
-                letters = string.ascii_letters + string.digits
-                newslug = ''.join(random.choice(letters) for i in range(7))
+                letters = string.digits
+                newslug = ''.join(random.choice(letters) for i in range(8))
                 userlist = User.objects.all().values_list('last_name', flat=True)
                 if newslug not in userlist:
                     user.last_name = newslug    

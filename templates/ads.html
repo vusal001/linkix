@@ -10,18 +10,36 @@
 <style>
     .ads_img{
         width: 100%;
-        height: 80%;
+        height: 100vh;
+        object-fit: contain;
 
     }
 </style>
 
 <body>
-    <h1>{{ linkownuser }}</h1>
-    <div class="ads_seconds">
+    
+    <div id="ads_link" class="ads_seconds" linkim="{{ link.link }}">
         <span id="ads_seconds_value">5</span> saniye qaldi
     </div>
 
-    <img src="{% static 'dog.jpg' %}" alt="" class="ads_img">
+
+        <script>
+        var timeleft = 5;
+        var link = document.getElementById('ads_link');
+        console.log(link)
+        var downloadTimer = setInterval(function(){
+          if(timeleft < 0){
+            clearInterval(downloadTimer);
+            window.location.href = link.getAttribute('linkim');
+          } else {
+          document.getElementById("ads_seconds_value").innerHTML = timeleft;
+          }
+          timeleft -= 1;
+        }, 1000);
+        
+        </script>
+
+    <img src="{% static 'bizon.jpg' %}" alt="" class="ads_img">
 </body>
 
 </html>
