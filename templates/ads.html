@@ -1,45 +1,56 @@
 
+{% extends 'base.html' %}
+
+
+{% load crispy_forms_tags %}
+{% block base %}
 {% load static %}
 
-<html>
-
-<head>
-
-</head>
-
-<style>
-    .ads_img{
-        width: 100%;
-        height: 100vh;
-        object-fit: contain;
-
-    }
-</style>
 
 <body>
+
+    <div class="all_container">
+        <div class="ads_link_block" >
+
+            <progress value="0" max="5" id="progress"></progress>
+            
+            <div id="ads_link" class="ads_seconds" linkim="{{ link.link }}">
+                <span id="ads_seconds_value">5</span> saniyə&nbsp;  sonra&nbsp;  linkə <br>
+                yönləndiriləcəksiniz
+            </div>
+        </div>
+     
     
-    <div id="ads_link" class="ads_seconds" linkim="{{ link.link }}">
-        <span id="ads_seconds_value">5</span> saniye qaldi
+    
+          
+        <div class="img_container">
+            <img src="{% static 'berg2.jpg' %}" alt="" height="100%" class="ads_img">
+        </div>
     </div>
+    
+
+    
 
 
-        <script>
-        var timeleft = 5;
-        var link = document.getElementById('ads_link');
-        console.log(link)
-        var downloadTimer = setInterval(function(){
-          if(timeleft < 0){
-            clearInterval(downloadTimer);
-            window.location.href = link.getAttribute('linkim');
-          } else {
-          document.getElementById("ads_seconds_value").innerHTML = timeleft;
-          }
-          timeleft -= 1;
-        }, 1000);
-        
-        </script>
 
-    <img src="{% static 'bizon.jpg' %}" alt="" class="ads_img">
 </body>
 
-</html>
+<script>
+    var timeleft = 5;
+    var timerigt = 0;
+    var link = document.getElementById('ads_link');
+    console.log(link)
+    var downloadTimer = setInterval(function(){
+      if(timeleft < 0 && timerigt > 5){
+        clearInterval(downloadTimer);
+        window.location.href = link.getAttribute('linkim');
+      } else {
+      document.getElementById("ads_seconds_value").innerHTML = timeleft;
+      document.getElementById("progress").value = timerigt;
+      }
+      timeleft -= 1;
+      timerigt += 1;
+    }, 1000);
+    
+    </script>
+{% endblock %}

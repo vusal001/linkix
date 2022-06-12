@@ -92,4 +92,9 @@ def Profile(request, username):
     return render(request, 'profile.html', contex)
 
 
+def log_out(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
+
+
 # Create your views here.

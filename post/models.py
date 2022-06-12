@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 import random
 import string
-
+from django.urls import reverse
 
 class Link(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -27,6 +27,10 @@ class Link(models.Model):
 
     linktype = models.CharField(max_length=100, choices=LINKTYPE, verbose_name='Linkin kategoriyası')
 
+
+
+    def get_absolute_url(self):
+        return reverse('ads_view', kwargs={'slug': self.slug})
 
 
     def save(self,  *args, **kwargs):

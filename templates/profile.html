@@ -1,18 +1,46 @@
-<html>
-    <head>
-        <title></title>
-    </head>
+{% extends 'base.html' %}
+
+
+{% load crispy_forms_tags %}
+{% block base %}
+{% load static %}
 
     <body>
-
+        <div class="profil_general">
+            <div class="profil_user">
+                <span>{{ user.first_name }}</span>
+            </div>
+            <div class="profil_slugid">
+                ID: {{ user.last_name }}
+            </div>
+        </div>
         {{ user.username }}
+
+        {% for userdata in user.userdata_set.all %}
+
+
+        <div class="container-fluid" style="background-color: #2e91c7; color: white; display: flex; justify-content: space-between; ">
+            <div class="link_click">
+                <p>Linklere keçid</p>
+                {{ userdata.clicklink }}
+            </div> 
+
+            <div class="link_click">
+                <p>Coins</p>
+                {{ userdata.coins }}
+            </div> 
+        </div>
+
+    
+
+        {% endfor %}
 
         {% for link in links %}
 
         
         <div style="padding: 10px; border:  1px black solid;">
             <h1>{{ link.name }}</h1>
-            <a href="{{ link.link }}">{{ link.link }}</a>
+            <a href="{{ link.get_absolute_url }}"><span class="baseurllink"></span>{{ link.get_absolute_url }}</a>
 
         </div>
           
@@ -20,6 +48,8 @@
 
 
         {% endfor %}
+
+    
     </body>
 
-</html>
+    {% endblock %}
